@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+   
+    </head>
+    <body>
+        
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="id">id  :</label>
+            <input type="text" id="id" name="id" required>
+            <button id='btn' type="button">Submit</button>
+        
+        
+        <script>
+            document.getElementById('btn').addEventListener('click', function(event){
+                const NAME = document.getElementById('name').value;
+                const ID = document.getElementById('id').value;
+
+                fetch('http://127.0.0.1:5000/data/',{
+                    method : 'POST',
+                    body : JSON.stringify({
+                        id : ID,
+                        name : NAME
+                }),headers : {
+                    'Content-Type': 'application/json'
+                }
+                })
+                .then(response => {
+                    if(!response.ok){
+                        return response.text().then(text => {
+                            throw new Error('HATA : ',text);
+                        });
+                    }else{
+                        return response.json();
+                    }
+
+                })
+                .then(data => {
+                    console.log('basarili : ',data);
+                })
+                .catch((error) => {
+                    console.error('Hata : ',error);
+                });
+            });
+        
+        </script>
+        
+    </body>
+</html>
